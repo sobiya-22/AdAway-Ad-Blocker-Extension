@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "version": "2.0",
+  "name": "AdAway - AdBlocker",
+  "permissions": ["scripting", "activeTab", "storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Remove ads?",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "toggle-blocking": {
+      "suggested_key": {
+        "default": "Ctrl+Q",
+        "mac": "Command+Q"
+      },
+      "description": "Toggle Ad Blocking On/Off"
+    }
+  }
+}
