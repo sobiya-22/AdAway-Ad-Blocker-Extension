@@ -8,18 +8,11 @@ function removeAds() {
     "[id*='sponsor']",
     "[class*='sponsor']",
     "iframe[src*='ads']",
-    "[id*='ad']",
-    "[class*='ad']",
-    "[id*='banner']",
-    "[class*='banner']",
-    "[id*='sponsor']",
-    "[class*='sponsor']",
     "[data-ad]",
     "[data-advertisement]",
     "[aria-label='Advertisement']",
-    "div[class*='ad']",
     "div[data-testid*='ad']",
-    "div[data-testid*='AdSlot']",
+    "div[data-testid*='AdSlot']"
   ];
 
   adSelectors.forEach(selector => {
@@ -30,15 +23,30 @@ function removeAds() {
   console.log("Ads removed!");
 }
 
+// Dynamically observe the DOM for changes and remove ads
+function startObserving() {
+  if (observer) return; // Avoid duplicate observers
+
+  observer = new MutationObserver(() => removeAds());
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Stop observing DOM changes
+function stopObserving() {
+  if (observer) {
+    observer.disconnect();
+    observer = null;
+  }
+}
+
 // Listen for messages from the background script
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "blocking-status") {
     if (message.isBlockingEnabled) {
       removeAds();
-
-      // Dynamically observe the DOM for new ads
-      const observer = new MutationObserver(() => removeAds());
-      observer.observe(document.body, { childList: true, subtree: true });
+      startObserving();
+    } else {
+      stopObserving();
     }
   }
 });

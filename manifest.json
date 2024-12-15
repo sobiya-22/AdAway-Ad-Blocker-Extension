@@ -16,14 +16,5 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ],
-  "commands": {
-    "toggle-blocking": {
-      "suggested_key": {
-        "default": "Ctrl+Q",
-        "mac": "Command+Q"
-      },
-      "description": "Toggle Ad Blocking On/Off"
-    }
-  }
+  ]
 }
